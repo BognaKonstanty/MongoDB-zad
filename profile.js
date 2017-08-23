@@ -7,10 +7,13 @@ var forms = require('forms');
 var mongoose = require('mongoose');
 var User = require('./models');
 
-
 var profileForm = forms.create({
     givenName: forms.fields.string({ required: true }),
     surname: forms.fields.string({ required: true }),
+    streetAddress: forms.fields.string(),
+    city: forms.fields.string(),
+    state: forms.fields.string(),
+    zip: forms.fields.string()
 });
 
 function renderForm(req, res, locals) {
@@ -18,7 +21,11 @@ function renderForm(req, res, locals) {
         title: 'My Profile',
         csrfToken: req.csrfToken(),
         givenName: req.user.givenName,
-        surname: req.user.surname 
+        surname: req.user.surname ,
+        streetAddress: req.user.streetAddress,
+        city: req.user.city,
+        state: req.user.state,
+        zip: req.user.zip
     }, locals || {}));
 }
 
@@ -33,18 +40,21 @@ module.exports = function profile() {
             success: function(form) {
                 req.user.givenName = form.data.givenName;
                 req.user.surname = form.data.surname;
-                req.user.customData.save();
+                req.user.streetAddress = form.data.streetAddress;
+                var address ={
+                    city: form.data.city,
+                    state: form.data.state,
+                    zip: form.data.zip
+                };
+                req.user.address = address;
+
                 var user = new User();
-                var address = new Address();
-                    address.givenName = req.user.givenName;
-                    address.surname = req.user.surname;
-                    address.save(function(err) {
-                        if (err) {
-                            console.log(err);
-                        }
-                        res.json('Address added to DB');
-                    });
-                req.user.save(function(err) {
+                user.givenName = req.user.givenName;
+                user.surname = req.user.surname;
+                user.streetAddress = req.user.streetAddress;
+                user.address =req.user.address;
+
+                user.save(function(err) {
                     if (err) {
                         if (err.developerMessage){
                             console.error(err);

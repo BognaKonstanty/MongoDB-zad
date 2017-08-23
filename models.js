@@ -2,11 +2,22 @@ var mongoose = require('mongoose');
 
 var shipmentSchema = new mongoose.Schema({
 	givenName:{
-		type: String
+		type: String,
+		required: true
 	},
 	surname: {
-		type: String
+		type: String,
+		required: true
+	},
+	
+    streetAddress: {
+    	type: String,   	
+	},
+	address: {
+		city: String,
+		state: String,
+		zip:String
 	}
 });
 
-module.export = mongoose.model('shipmentSchema', shipmentSchema);
+module.exports = mongoose.model('shipmentSchema', shipmentSchema);
