@@ -10,10 +10,8 @@ var shipmentSchema = new mongoose.Schema({
 		required: true
 	},
 	
-    streetAddress: {
-    	type: String,   	
-	},
 	address: {
+		streetAddress: String,
 		city: String,
 		state: String,
 		zip:String

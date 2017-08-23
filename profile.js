@@ -40,8 +40,8 @@ module.exports = function profile() {
             success: function(form) {
                 req.user.givenName = form.data.givenName;
                 req.user.surname = form.data.surname;
-                req.user.streetAddress = form.data.streetAddress;
                 var address ={
+                    streetAddress: form.data.streetAddress,
                     city: form.data.city,
                     state: form.data.state,
                     zip: form.data.zip
@@ -51,7 +51,6 @@ module.exports = function profile() {
                 var user = new User();
                 user.givenName = req.user.givenName;
                 user.surname = req.user.surname;
-                user.streetAddress = req.user.streetAddress;
                 user.address =req.user.address;
 
                 user.save(function(err) {
